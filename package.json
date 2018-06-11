@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "xcode": "open ios/reactNativeFastlaneWithFabric.xcodeproj",
+    "android": "cd android && ./gradlew installDebug"
   },
   "dependencies": {
     "react": "16.3.1",
