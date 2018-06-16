@@ -21,6 +21,13 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+*.dSYM.zip
+ios/*.mobileprovision
+ios/fastlane/.env.default
+*.cer
+
+
+
 
 # Android/IntelliJ
 #

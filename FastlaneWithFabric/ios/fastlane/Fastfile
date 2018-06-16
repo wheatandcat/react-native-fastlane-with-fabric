@@ -16,8 +16,50 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    # add actions here: https://docs.fastlane.tools/actions
+  PLIST_PATH = "./FastlaneWithFabric/Info.plist"
+
+  desc "create ipa"
+  lane :create_ipa do
+
+    sigh(
+      username: ENV["USER_NAME"],
+      force: false,
+      app_identifier: "org.reactjs.native.example.FastlaneWithFabric",
+      adhoc: true,
+    )
+
+    increment_version_number(
+      version_number: "0.0.0",
+      xcodeproj: "FastlaneWithFabric.xcodeproj"
+    )
+
+    increment_build_number(
+      build_number: Time.now.strftime("%Y%m%d%H%M"),
+      xcodeproj: "FastlaneWithFabric.xcodeproj"
+    )
+
+    build_app(
+      scheme: "FastlaneWithFabric",
+      output_name: "FastlaneWithFabric.ipa",
+      export_method: "ad-hoc"
+    )
+
   end
+
+  desc "deploy fabric"
+  lane :fabric do
+
+    crashlytics(
+      crashlytics_path: "./Crashlytics.framework",
+      api_token: ENV["FABRIC_API_TOKEN"],
+      build_secret: ENV["FABRIC_API_SECRET"],
+      ipa_path: 'FastlaneWithFabric.ipa',
+      notes: "by fastlane",
+      notifications: true,
+      groups: ENV["FABRIC_GROUP"],
+    )
+
+  end
+
+
 end
