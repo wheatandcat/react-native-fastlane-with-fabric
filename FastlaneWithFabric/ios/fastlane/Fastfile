@@ -16,8 +16,6 @@
 default_platform(:ios)
 
 platform :ios do
-  PLIST_PATH = "./FastlaneWithFabric/Info.plist"
-
   desc "create ipa"
   lane :create_ipa do
 
@@ -61,5 +59,27 @@ platform :ios do
 
   end
 
+  desc "deploy appetize"
+  lane :to_appetize do
+    xcbuild(
+      scheme: "FastlaneWithFabric",
+    )
+
+    sh("zip", "-r", "-X", "../app.zip", ENV["HOME"] + '/Library/Developer/Xcode/DerivedData/'+ ENV["APP_NAME"] +"/Build/Products/Release-iphonesimulator/FastlaneWithFabric.app")
+
+    appetize(
+      path: "./app.zip",
+      platform: "ios",
+      api_token: ENV["APPETIZE_TOKEN"],
+      public_key: ENV["APPETIZE_PUBLIC_KEY"],
+    )
+
+    slack(
+      message: ENV["SLACK_USERNAME"],
+      message: "new build available #{lane_context[SharedValues::APPETIZE_APP_URL]}",
+      link_names: true
+    )
+
+  end
 
 end

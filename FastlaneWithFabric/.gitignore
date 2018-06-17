@@ -25,9 +25,7 @@ project.xcworkspace
 ios/*.mobileprovision
 ios/fastlane/.env.default
 *.cer
-
-
-
+app.zip
 
 # Android/IntelliJ
 #

@@ -26,6 +26,11 @@ create ipa
 fastlane ios fabric
 ```
 deploy fabric
+### ios to_appetize
+```
+fastlane ios to_appetize
+```
+deploy appetize
 
 ----
 
