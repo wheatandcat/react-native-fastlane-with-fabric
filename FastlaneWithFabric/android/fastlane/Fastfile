@@ -1,0 +1,64 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :create_apk do
+
+    gradle(task: "clean")
+    
+    gradle(task: "assembleRelease")
+
+    sh("jarsigner", "-storepass", ENV["KEY_STORE_PASSWORD"], "-verbose", "-keystore", "../app/android-release.keystore", "../app/build/outputs/apk/app-release-unsigned.apk", "android-release")
+
+  end
+
+  desc "deploy fabric"
+  lane :fabric do
+
+    crashlytics(
+      api_token: ENV["FABRIC_API_TOKEN"],
+      build_secret: ENV["FABRIC_API_SECRET"],
+      apk_path: 'app/build/outputs/apk/app-release-unsigned.apk',
+      notes: "by fastlane",
+      notifications: true,
+      groups: ENV["FABRIC_GROUP"],
+    )
+
+  end
+
+
+  desc "deploy appetize"
+  lane :to_appetize do
+
+    appetize(
+      path: "app/build/outputs/apk/app-release-unsigned.apk",
+      platform: "android",
+      api_token: ENV["APPETIZE_TOKEN"],
+      public_key: ENV["APPETIZE_PUBLIC_KEY"],
+    )
+
+    slack(
+      message: ENV["SLACK_USERNAME"],
+      message: "new build available #{lane_context[SharedValues::APPETIZE_APP_URL]}",
+      link_names: true
+    )
+
+  end
+
+end
