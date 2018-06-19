@@ -20,7 +20,6 @@ platform :ios do
   lane :create_ipa do
 
     sigh(
-      username: ENV["USER_NAME"],
       force: false,
       app_identifier: "org.reactjs.native.example.FastlaneWithFabric",
       adhoc: true,
