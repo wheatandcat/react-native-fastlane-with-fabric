@@ -124,7 +124,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-        manifestPlaceholders = [fabricApiKey: project.property("fabricApiKey")];
+        manifestPlaceholders = [fabricApiKey: project.property("FABRIC_API_KEY")];
     }
     signingConfigs {
         release {

@@ -34,7 +34,6 @@ build/
 .gradle
 local.properties
 *.iml
-gradle.properties
 android/fastlane/.env.default
 
 # node.js
