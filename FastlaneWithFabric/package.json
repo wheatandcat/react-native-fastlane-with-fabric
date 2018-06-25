@@ -1,7 +1,8 @@
 {
   "name": "FastlaneWithFabric",
   "version": "0.0.1",
-  "private": true,
+  "author": "wheatandcat",
+  "license": "MIT",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "xcode": "open ios/FastlaneWithFabric.xcodeproj",
